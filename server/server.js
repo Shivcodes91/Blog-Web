@@ -5,7 +5,6 @@ const multer   = require('multer');
 const fs       = require('fs');
 const path     = require('path');
 
-
 require('dotenv').config();
 
 // 1️⃣ Ensure the uploads directory exists
@@ -29,6 +28,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(cors({
+  origin: 'https://my-blog-frontend.vercel.app',
+  credentials: true,
+}));
+ 
 // 3️⃣ Serve images from the absolute path
 app.use('/uploads', express.static(uploadDir));
 
