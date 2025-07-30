@@ -139,11 +139,9 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // 🌙 dark mode toggle
   const token = localStorage.getItem('token');
 
-  const API_URL = process.env.REACT_APP_API_URL;
-
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/posts`, {
+      .get('http://localhost:5001/api/posts', {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       })
       .then(res => setPosts(res.data))
@@ -153,7 +151,7 @@ export default function Home() {
   const handleDelete = async id => {
     if (!window.confirm('Delete this post?')) return;
     try {
-      await axios.delete(`${API_URL}/api/posts/${id}`, {
+      await axios.delete(`http://localhost:5001/api/posts/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPosts(prev => prev.filter(post => post._id !== id));
@@ -168,7 +166,7 @@ export default function Home() {
     <div style={{ ...theme.wrapper }}>
       <div style={theme.header}>
         <h1 style={theme.title}>
-          Blogs -<span style={theme.accent}> just write it!</span>
+           Blogs -<span style={theme.accent}> just write it!</span>
         </h1>
         <button onClick={() => setDarkMode(!darkMode)} style={theme.toggleBtn}>
           {darkMode ? '☀ Light Mode' : '🌙 Dark Mode'}
@@ -193,7 +191,7 @@ export default function Home() {
           >
             {p.imagePath && (
               <img
-                src={`${API_URL}/uploads/${p.imagePath}`}
+                src={`http://localhost:5001/uploads/${p.imagePath}`}
                 alt={p.title}
                 style={theme.image}
               />
