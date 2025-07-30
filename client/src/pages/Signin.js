@@ -10,19 +10,23 @@ export default function Signin() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:5001/api/auth/signin', { email, password });
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('name', data.name);
-      localStorage.setItem('email', data.email);
+      const res = await axios.post('http://localhost:5001/api/auth/signin', {
+        email,
+        password
+      });
+      localStorage.setItem('token', res.data.token);
       navigate('/');
     } catch (err) {
-      alert(err.response.data.error);
+      const message = err?.response?.data?.error || 'Signin failed. Please try again.';
+      console.error('Signin error:', err);
+      alert(message);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Sign In</h2>
+
       <div className="mb-3">
         <label className="form-label">Email</label>
         <input
@@ -33,6 +37,7 @@ export default function Signin() {
           required
         />
       </div>
+
       <div className="mb-3">
         <label className="form-label">Password</label>
         <input
@@ -43,6 +48,7 @@ export default function Signin() {
           required
         />
       </div>
+
       <button type="submit" className="btn btn-primary">Sign In</button>
     </form>
   );

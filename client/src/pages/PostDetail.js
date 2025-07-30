@@ -8,23 +8,21 @@ export default function PostDetail() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    axios.get('call the api here', {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    })
-    .then(res => {
-      const found = res.data.find(p => p._id === id);
-      setPost(found);
-    })
-    .catch(console.error);
+    axios
+      .get(`http://localhost:5001/api/posts/${id}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      })
+      .then(res => setPost(res.data))
+      .catch(console.error);
   }, [id, token]);
 
   if (!post) return <p>Loading…</p>;
 
   return (
     <div className="card mb-4 shadow-sm">
-      {post.imagePath && 
-
-}`}
+      {post.imagePath && (
+        <img
+          src={`http://localhost:5001/uploads/${post.imagePath}`}
           className="card-img-top"
           alt={post.title}
         />

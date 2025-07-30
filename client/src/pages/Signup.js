@@ -3,24 +3,31 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
-  const [name, setName]       = useState('');
-  const [email, setEmail]     = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/api/auth/signup', { name, email, password });
+      await axios.post('http://localhost:5001/api/auth/signup', {
+        name,
+        email,
+        password
+      });
       navigate('/signin');
     } catch (err) {
-      alert(err.response.data.error);
+      const message = err?.response?.data?.error || 'Signup failed. Please try again.';
+      console.error('Signup error:', err);
+      alert(message);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Sign Up</h2>
+
       <div className="mb-3">
         <label className="form-label">Name</label>
         <input
@@ -30,6 +37,7 @@ export default function Signup() {
           required
         />
       </div>
+
       <div className="mb-3">
         <label className="form-label">Email</label>
         <input
@@ -40,6 +48,7 @@ export default function Signup() {
           required
         />
       </div>
+
       <div className="mb-3">
         <label className="form-label">Password</label>
         <input
@@ -50,6 +59,7 @@ export default function Signup() {
           required
         />
       </div>
+
       <button type="submit" className="btn btn-primary">Sign Up</button>
     </form>
   );
